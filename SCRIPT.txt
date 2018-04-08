@@ -1,0 +1,289 @@
+DROP DATABASE IF EXISTS MLD;
+
+CREATE DATABASE IF NOT EXISTS MLD;
+USE MLD;
+# -----------------------------------------------------------------------------
+#       TABLE : SECTEUR
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS SECTEUR
+ (
+   CODE_SETEUR VARCHAR(128) NOT NULL  ,
+   NOM_SECTEUR VARCHAR(128) NOT NULL  
+   , PRIMARY KEY (CODE_SETEUR) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       TABLE : ADHÉRANT
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS ADHÉRANT
+ (
+   NUM_ADHÉRANT INTEGER NOT NULL  ,
+   NOM_ADHÉRANT CHAR(32) NOT NULL  ,
+   PRENOM_ADHÉRANT CHAR(32) NOT NULL  ,
+   NUM_RUE_ADHÉRANT INTEGER NOT NULL  ,
+   VILLE_ADHÉRANT CHAR(32) NOT NULL  ,
+   CODE_POSTAL_ADHÉRANT INTEGER NOT NULL  
+   , PRIMARY KEY (NUM_ADHÉRANT) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       TABLE : CLIENT
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS CLIENT
+ (
+   CODE_CLIENT INTEGER NOT NULL  ,
+   NOM_CLIENT CHAR(32) NOT NULL  ,
+   PRENOM_CLIENT CHAR(32) NOT NULL  ,
+   VILLE_CILENT CHAR(32) NOT NULL  ,
+   RUE_CLIENT CHAR(32) NOT NULL  ,
+   NUM_TEL_CLIENT INTEGER NOT NULL  
+   , PRIMARY KEY (CODE_CLIENT) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       TABLE : ACTIVITÉ
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS ACTIVITÉ
+ (
+   CODE_ACTIVITÉ INTEGER NOT NULL  ,
+   NOM_ACTIVITÉ CHAR(32) NOT NULL  
+   , PRIMARY KEY (CODE_ACTIVITÉ) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       TABLE : CONTRAT
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS CONTRAT
+ (
+   NUM_CONTRAT INTEGER NOT NULL  ,
+   CODE_SETEUR VARCHAR(128) NOT NULL  ,
+   NUM_ADHÉRANT INTEGER NOT NULL  ,
+   DATE_DEBUT_CONTRAT DATE NOT NULL  ,
+   DATE_FIN_CONTRAT DATE NOT NULL  ,
+   TARIF__HT INTEGER NOT NULL  ,
+   TARIF_TTC INTEGER NOT NULL  
+   , PRIMARY KEY (NUM_CONTRAT) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       INDEX DE LA TABLE CONTRAT
+# -----------------------------------------------------------------------------
+
+
+CREATE  INDEX I_FK_CONTRAT_SECTEUR
+     ON CONTRAT (CODE_SETEUR ASC);
+
+CREATE  INDEX I_FK_CONTRAT_ADHÉRANT
+     ON CONTRAT (NUM_ADHÉRANT ASC);
+
+# -----------------------------------------------------------------------------
+#       TABLE : HEURE_RAPPEL
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS HEURE_RAPPEL
+ (
+   CODE_HEURE_RAPPL INTEGER NOT NULL  ,
+   CODE_APPEL INTEGER NOT NULL  ,
+   HEURE_RAPPEL TIME NOT NULL  ,
+   DATE_RAPPEL DATE NOT NULL  
+   , PRIMARY KEY (CODE_HEURE_RAPPL) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       INDEX DE LA TABLE HEURE_RAPPEL
+# -----------------------------------------------------------------------------
+
+
+CREATE  INDEX I_FK_HEURE_RAPPEL_APPEL
+     ON HEURE_RAPPEL (CODE_APPEL ASC);
+
+# -----------------------------------------------------------------------------
+#       TABLE : APPEL
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS APPEL
+ (
+   CODE_APPEL INTEGER NOT NULL  ,
+   CODE_CLIENT INTEGER NOT NULL  ,
+   DATE_APPEL DATE NOT NULL  ,
+   HEURE_APPEL TIME NOT NULL  
+   , PRIMARY KEY (CODE_APPEL) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       INDEX DE LA TABLE APPEL
+# -----------------------------------------------------------------------------
+
+
+CREATE  INDEX I_FK_APPEL_CLIENT
+     ON APPEL (CODE_CLIENT ASC);
+
+# -----------------------------------------------------------------------------
+#       TABLE : ETABLIR
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS ETABLIR
+ (
+   NUM_CONTRAT INTEGER NOT NULL  ,
+   CODE_APPEL INTEGER NOT NULL  
+   , PRIMARY KEY (NUM_CONTRAT,CODE_APPEL) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       INDEX DE LA TABLE ETABLIR
+# -----------------------------------------------------------------------------
+
+
+CREATE  INDEX I_FK_ETABLIR_CONTRAT
+     ON ETABLIR (NUM_CONTRAT ASC);
+
+CREATE  INDEX I_FK_ETABLIR_APPEL
+     ON ETABLIR (CODE_APPEL ASC);
+
+# -----------------------------------------------------------------------------
+#       TABLE : CONCERNER
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS CONCERNER
+ (
+   CODE_ACTIVITÉ INTEGER NOT NULL  ,
+   NUM_CONTRAT INTEGER NOT NULL  
+   , PRIMARY KEY (CODE_ACTIVITÉ,NUM_CONTRAT) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       INDEX DE LA TABLE CONCERNER
+# -----------------------------------------------------------------------------
+
+
+CREATE  INDEX I_FK_CONCERNER_ACTIVITÉ
+     ON CONCERNER (CODE_ACTIVITÉ ASC);
+
+CREATE  INDEX I_FK_CONCERNER_CONTRAT
+     ON CONCERNER (NUM_CONTRAT ASC);
+
+# -----------------------------------------------------------------------------
+#       TABLE : EFFECTUER
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS EFFECTUER
+ (
+   CODE_APPEL INTEGER NOT NULL  ,
+   NUM_CONTRAT INTEGER NOT NULL  
+   , PRIMARY KEY (CODE_APPEL,NUM_CONTRAT) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       INDEX DE LA TABLE EFFECTUER
+# -----------------------------------------------------------------------------
+
+
+CREATE  INDEX I_FK_EFFECTUER_APPEL
+     ON EFFECTUER (CODE_APPEL ASC);
+
+CREATE  INDEX I_FK_EFFECTUER_CONTRAT
+     ON EFFECTUER (NUM_CONTRAT ASC);
+
+# -----------------------------------------------------------------------------
+#       TABLE : APPARTIENT
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS APPARTIENT
+ (
+   CODE_ACTIVITÉ INTEGER NOT NULL  ,
+   NUM_ADHÉRANT INTEGER NOT NULL  
+   , PRIMARY KEY (CODE_ACTIVITÉ,NUM_ADHÉRANT) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       INDEX DE LA TABLE APPARTIENT
+# -----------------------------------------------------------------------------
+
+
+CREATE  INDEX I_FK_APPARTIENT_ACTIVITÉ
+     ON APPARTIENT (CODE_ACTIVITÉ ASC);
+
+CREATE  INDEX I_FK_APPARTIENT_ADHÉRANT
+     ON APPARTIENT (NUM_ADHÉRANT ASC);
+
+
+# -----------------------------------------------------------------------------
+#       CREATION DES REFERENCES DE TABLE
+# -----------------------------------------------------------------------------
+
+
+ALTER TABLE CONTRAT 
+  ADD FOREIGN KEY FK_CONTRAT_SECTEUR (CODE_SETEUR)
+      REFERENCES SECTEUR (CODE_SETEUR) ;
+
+
+ALTER TABLE CONTRAT 
+  ADD FOREIGN KEY FK_CONTRAT_ADHÉRANT (NUM_ADHÉRANT)
+      REFERENCES ADHÉRANT (NUM_ADHÉRANT) ;
+
+
+ALTER TABLE HEURE_RAPPEL 
+  ADD FOREIGN KEY FK_HEURE_RAPPEL_APPEL (CODE_APPEL)
+      REFERENCES APPEL (CODE_APPEL) ;
+
+
+ALTER TABLE APPEL 
+  ADD FOREIGN KEY FK_APPEL_CLIENT (CODE_CLIENT)
+      REFERENCES CLIENT (CODE_CLIENT) ;
+
+
+ALTER TABLE ETABLIR 
+  ADD FOREIGN KEY FK_ETABLIR_CONTRAT (NUM_CONTRAT)
+      REFERENCES CONTRAT (NUM_CONTRAT) ;
+
+
+ALTER TABLE ETABLIR 
+  ADD FOREIGN KEY FK_ETABLIR_APPEL (CODE_APPEL)
+      REFERENCES APPEL (CODE_APPEL) ;
+
+
+ALTER TABLE CONCERNER 
+  ADD FOREIGN KEY FK_CONCERNER_ACTIVITÉ (CODE_ACTIVITÉ)
+      REFERENCES ACTIVITÉ (CODE_ACTIVITÉ) ;
+
+
+ALTER TABLE CONCERNER 
+  ADD FOREIGN KEY FK_CONCERNER_CONTRAT (NUM_CONTRAT)
+      REFERENCES CONTRAT (NUM_CONTRAT) ;
+
+
+ALTER TABLE EFFECTUER 
+  ADD FOREIGN KEY FK_EFFECTUER_APPEL (CODE_APPEL)
+      REFERENCES APPEL (CODE_APPEL) ;
+
+
+ALTER TABLE EFFECTUER 
+  ADD FOREIGN KEY FK_EFFECTUER_CONTRAT (NUM_CONTRAT)
+      REFERENCES CONTRAT (NUM_CONTRAT) ;
+
+
+ALTER TABLE APPARTIENT 
+  ADD FOREIGN KEY FK_APPARTIENT_ACTIVITÉ (CODE_ACTIVITÉ)
+      REFERENCES ACTIVITÉ (CODE_ACTIVITÉ) ;
+
+
+ALTER TABLE APPARTIENT 
+  ADD FOREIGN KEY FK_APPARTIENT_ADHÉRANT (NUM_ADHÉRANT)
+      REFERENCES ADHÉRANT (NUM_ADHÉRANT) ;
+

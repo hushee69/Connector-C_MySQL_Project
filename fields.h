@@ -1,0 +1,29 @@
+#pragma once
+
+#ifndef _FIELDS_H
+#define _FIELDS_H
+
+#define MAX_FIELDS_SIZE				12
+#define TAILLE_SERVER				255
+#define TAILLE_USER					255
+#define TAILLE_PASS					255
+#define	TAILLE_DB					255
+#define QUERY_SIZE					2048
+
+#define TAILLE_TABLE				255
+#define SECTEUR_FIELDS_SIZE			3		// including PRIMARY KEY
+#define CLIENTS_FIELDS_SIZE			7
+#define ADHERANT_FIELDS_SIZE		8
+#define ACTIVITE_FIELDS_SIZE		3
+#define CONTRAT_FIELDS_SIZE			8
+#define HEURE_RAPPEL_FIELDS_SIZE	5
+#define APPEL_FIELDS_SIZE			5
+#define ETABLIR_FIELDS_SIZE			3
+#define CONCERNER_FIELDS_SIZE		3
+#define EFFECTUER_FIELDS_SIZE		3
+#define APPARTIENT_FIELDS_SIZE		3
+
+#define NUMBER_OF_SECTORS			80
+#define NUMBER_OF_ACTIVITIES		10
+
+#endif

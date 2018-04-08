@@ -1,0 +1,25 @@
+﻿Build started 1/7/2018 02:33:45.
+     1>Project "C:\Users\izanami\documents\visual studio 2010\Projects\AdherProject\AdherProject\AdherProject.vcxproj" on node 2 (build target(s)).
+     1>PrepareForBuild:
+         Creating directory "C:\Users\izanami\documents\visual studio 2010\Projects\AdherProject\Release\".
+       InitializeBuildStatus:
+         Creating "Release\AdherProject.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt colors.cpp common.cpp connection.cpp fields.h main.cpp mem.cpp str.cpp
+         colors.cpp
+         common.cpp
+     1>common.cpp(3): fatal error C1083: Cannot open include file: 'mysql.h': No such file or directory
+         connection.cpp
+     1>connection.cpp(2): fatal error C1083: Cannot open include file: 'mysql.h': No such file or directory
+         fields.h
+         main.cpp
+     1>main.cpp(2): fatal error C1083: Cannot open include file: 'mysql.h': No such file or directory
+         mem.cpp
+     1>mem.cpp(46): warning C4101: 'p' : unreferenced local variable
+     1>mem.cpp(98): warning C4018: '<' : signed/unsigned mismatch
+         str.cpp
+     1>Done Building Project "C:\Users\izanami\documents\visual studio 2010\Projects\AdherProject\AdherProject\AdherProject.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.30
